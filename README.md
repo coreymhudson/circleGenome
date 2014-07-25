@@ -1,7 +1,7 @@
 circleGenome
 ============
 
-This is a small javascript library, used to print circular genomes, using a .gff file.
+This is a small javascript library, used to print circular genomes, using a .gff file. Its design it so be lightweight, rather than including numerous features, zooms, gc-plots, skews, hyperlinking. It makes cicular annotation of genomic features, I expect it to be useful for plasmids, circular chromosomes, etc. Being more lightweight allows it to be incorporated in visualization workflows/pipelines and as a component of bioinformatic websites.
 
 **It is designed to have the following API:<br>**
 ```javascript
@@ -16,3 +16,4 @@ plotGenome(genome_name, genome_length, features_to_plot, features_JSON);
 **This will produce the following output:**
 
 ![alt tag](https://github.com/coreymhudson/circleGenome/blob/master/carsonella_example.png)
+          
