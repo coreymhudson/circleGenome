@@ -9,7 +9,8 @@ features_to_plot = ['tRNA', 'CDS', 'rRNA'];
 genome_length = 159662;
 genome_name = 'Carsonella ruddii PV';
 gff_file = "NC_008512.gff";
-plotGenome(genome_name, genome_length, features_to_plot, gff_file);
+features_JSON = readGFF(gff_file);
+plotGenome(genome_name, genome_length, features_to_plot, features_JSON);
 ```
 
 **This will produce the following output:**
