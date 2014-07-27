@@ -86,3 +86,41 @@ function drawCircle(canvas, context, centerX, centerY, radius, options) {
 	context.fill();
 	context.stroke();
 }
+
+function addTickMarks(canvas, context, centerX, centerY, radius, options) {
+
+}
+
+function numberNomenclature(number) {
+    var prefix;
+    if (number === 0) {
+        prefix = number;
+    } else if ((number % 1000000000) === 0) {
+        prefix = (number / 1000000000) + "G";
+    } else if ((number % 1000000) === 0) {
+        prefix = (number / 1000000) + "M";
+    } else if ((number % 1000) === 0) {
+        prefix = (number / 1000) + "K";
+    } else {
+        prefix = number;
+    }
+    return prefix;
+}
+
+function angle(centerX, centerY, p1) {
+	var p0 = {x: centerX, y: centerY - Math.sqrt(Math.abs(p1.x - centerX) * Math.abs(p1.x - centerX) + Math.abs(p1.y - centerY) * Math.abs(p1.y - centerY))};
+	return (2 * Math.atan2(p1.y - p0.y, p1.x - p0.x)) * 180 / Math.PI;
+}
+
+function log10(val) {
+	return Math.log(val) / Math.LN10;
+}
+
+function orderOfMagnitude(val) {
+	return Math.pow(10, Math.floor(log10(val)));
+}
+
+function scaleValues(location, A, B, C, D) {
+	var position = (((location - A) * (D - C)) / (B - A)) + C;
+	return position;
+}
