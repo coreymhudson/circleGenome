@@ -3,17 +3,19 @@
 <head>
 	<script src="readGFF.js"></script>
 	<script src="circleGenome.js"></script>
+	<script src="Please.min.js"></script>
 </head>
 <body>
 	<div>
 		<canvas id="my_canvas" width="600" height="600">
 			<script>
-			//features_JSON = readGFF("NC_008512.gff");
 			var features_JSON = {};
+			features_JSON = readGFF("NC_008512.gff");
 			genome_name = "Carsonella ruddii ruddii PC";
 			genome_length = 159662;
 			features_to_plot = ['tRNA', 'CDS', 'rRNA'];
-			options = {'canvas': my_canvas};
+			var obj = Please.make_color({colors_returned: features_to_plot.length});
+			options = {'canvas': my_canvas, 'colors': obj};
 			plotGenome(genome_name, genome_length, features_to_plot, features_JSON, options);
 			</script>		
 		</canvas>

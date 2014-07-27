@@ -17,6 +17,8 @@ function plotGenome(genome_name, genome_length, features_to_plot, features_JSON,
 	drawCircle(canvas, context, centerX, centerY, radius, options);
 	addName(genome_name, genome_length, canvas, context, centerX, centerY, radius, options);
 	addTicks(canvas, context, genome_length, origin, interval, radius, centerX, centerY, options);
+	addLegend(canvas, context, features_to_plot, centerX, centerY, options.colors, 20);
+	addAnnotations(canvas, context, features_to_plot, features_JSON, centerX, centerY, radius, options.colors, origin, interval);
 }
 
 function addName(genome_name, genome_length, canvas, context, centerX, centerY, radius, options){
@@ -158,4 +160,63 @@ function orderOfMagnitude(val) {
 function scaleValues(location, A, B, C, D) {
 	var position = (((location - A) * (D - C)) / (B - A)) + C;
 	return position;
+}
+
+function addLegend(canvas, context, features_to_plot, centerX, centerY, colors, fontsize) {
+	//I would prefer if the randomness in colors was seedable, but for now this'll do.
+	var rectX = (canvas.width / 2 - 40);
+	var rectY = 75
+	var rectWidth = 20;
+	var rectHeight = 20;
+	var cornerRadius = 2;
+	context.textAlign = 'end';
+	context.textBaseline = 'middle';
+	for (var i = 0; i < colors.length; i++) {
+		context.lineJoin = "round";
+		context.strokeStyle = 'black';
+		context.lineWidth = cornerRadius;
+		context.fillStyle = colors[i];
+		context.fill();
+		context.strokeRect(rectX+(cornerRadius/2), rectY+(cornerRadius/2), rectWidth-cornerRadius, rectHeight-cornerRadius);
+		context.fillRect(rectX+(cornerRadius/2), rectY+(cornerRadius/2), rectWidth-cornerRadius, rectHeight-cornerRadius);
+		context.fillStyle = 'black';
+		context.fillText(features_to_plot[i], (rectX - 10), rectY + (fontsize / 2));
+		rectY += 25;
+	}
+}
+
+function addAnnotations(canvas, context, features_to_plot, features_JSON, centerX, centerY, radius, colors, origin, interval){
+	var array = JSON.parse(features_JSON);
+	var Features = {};
+	var linewidth = 10;
+	var i;
+	var rad;
+	for (i = 0; i < features_to_plot.length; i++) {
+		Features[features_to_plot[i]] = i;
+	}
+	for (i = 0; i < array.length; i++) {
+		if (Features[array[i].type] !== undefined){
+			var left = array[i].start;
+			var right = array[i].end;
+			if (array[i].strand === '+'){
+				rad = radius;
+			}
+			else {
+				rad = radius + linewidth;
+			}
+			var arcStart = origin + (left * interval);
+			var arcEnd = origin + (right * interval);
+			var arcRadius = rad + (linewidth / 2) + 1;
+			drawGlyphs(context, arcStart, arcEnd, colors[Features[array[i].type]], arcRadius, centerX, centerY, linewidth);
+		}
+	}
+}
+
+
+function drawGlyphs(context, start, end, color, radius, centerX, centerY, linewidth) {
+        context.beginPath();
+        context.arc(centerX, centerY, radius, start, end, false);
+        context.lineWidth = linewidth;
+        context.strokeStyle = color;
+        context.stroke();
 }
