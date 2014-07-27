@@ -2,11 +2,20 @@
 <!--Ultimately this html page needs to use the libraries and read and write-->
 <head>
 	<script src="readGFF.js"></script>
+	<script src="circleGenome.js"></script>
 </head>
 <body>
 	<div>
-		<script>alert(readGFF("NC_018418.gff"));
-		</script>
+		<canvas id="my_canvas" width="600" height="600">
+			<script>
+			features_JSON = readGFF("NC_008512.gff");
+			genome_name = "<i>Carsonella</i> ruddii ruddii PC";
+			genome_length = 159662;
+			features_to_plot = ['tRNA', 'CDS', 'rRNA'];
+			options = {'canvas': my_canvas, 'font': 'Times'};
+			plotGenome(genome_name, genome_length, features_to_plot, features_JSON, options);
+			</script>		
+		</canvas>
 	</div>
 </body>
 </html>
