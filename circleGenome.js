@@ -16,6 +16,7 @@ function plotGenome(genome_name, genome_length, features_to_plot, features_JSON,
 	}
 	drawCircle(canvas, context, centerX, centerY, radius, options);
 	addName(genome_name, genome_length, canvas, context, centerX, centerY, radius, options);
+	addTicks(canvas, context, genome_length, origin, interval, radius, centerX, centerY, options);
 }
 
 function addName(genome_name, genome_length, canvas, context, centerX, centerY, radius, options){
@@ -87,8 +88,42 @@ function drawCircle(canvas, context, centerX, centerY, radius, options) {
 	context.stroke();
 }
 
-function addTickMarks(canvas, context, centerX, centerY, radius, options) {
-
+function addTicks(canvas, context, genome_length, origin, interval, radius, centerX, centerY, options) {
+    var orders = 3;
+    var color = "black";
+    var font = "sans-serif";
+    var fontsize = 10;
+    var labelLevels = 2;
+    var
+        tickLength = radius / 7.5,
+        order = orderOfMagnitude(genome_length),
+        tick = 0,
+        linewidth = 1.5,
+        i,
+        sx,
+        textPos = radius / 4;
+    for (i = 0; i < orders; i += 1) {
+        while (tick < genome_length) {
+            context.beginPath();
+            context.lineWidth = linewidth;
+            context.fillStyle = color;
+            sx = origin + (tick * interval);
+            context.moveTo((radius * Math.cos(sx)) + centerX, (radius * Math.sin(sx)) + centerY);
+            context.lineTo(((radius-tickLength)* Math.cos(sx)) + centerX, ((radius-tickLength)* Math.sin(sx)) + centerY);
+            context.stroke();
+            if (i === (labelLevels - 1)){
+                context.textAlign = 'center';
+                context.font = fontsize+"px "+font;
+                context.fillText(numberNomenclature(tick), ((radius-textPos)* Math.cos(sx)) + centerX, ((radius-textPos)* Math.sin(sx)) + (centerY+(fontsize/2)));
+            }
+            tick += order;
+        }
+        order = orderOfMagnitude(order-1);
+        linewidth -= 0.5;
+        tickLength = radius / (7.5 + (2.5 * (i + 1)));
+        textPos = radius / (4 + (1.5 * (i + 1)));
+        tick = 0;
+    }
 }
 
 function numberNomenclature(number) {
