@@ -188,6 +188,9 @@
 		}
 
 		function random_seed( seed ){
+			while (seed <= 0){
+				seed += 355;
+			}
 			var x = Math.sin(seed++) * 10000;
 			return x - Math.floor(x);
 		}
