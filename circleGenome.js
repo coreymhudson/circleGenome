@@ -1,4 +1,4 @@
-function plotGenome(genome_name, genome_length, features_to_plot, features_JSON, options){
+function plotGenome(genome_name, genome_length, features_to_plot, features_JSON, labels_to_plot, options){
 	var canvas = options.canvas,
 		context = canvas.getContext('2d');
 	if(window.devicePixelRatio === 2) {
@@ -18,7 +18,7 @@ function plotGenome(genome_name, genome_length, features_to_plot, features_JSON,
 	addName(genome_name, genome_length, canvas, context, centerX, centerY, radius, options);
 	addTicks(canvas, context, genome_length, origin, interval, radius, centerX, centerY, options);
 	addLegend(canvas, context, features_to_plot, centerX, centerY, options.colors, 20);
-	addAnnotations(canvas, context, features_to_plot, features_JSON, centerX, centerY, radius, options.colors, origin, interval);
+	addAnnotations(canvas, context, features_to_plot, labels_to_plot, features_JSON, centerX, centerY, radius, options.colors, origin, interval, genome_length);
 }
 
 function addName(genome_name, genome_length, canvas, context, centerX, centerY, radius, options){
@@ -185,14 +185,18 @@ function addLegend(canvas, context, features_to_plot, centerX, centerY, colors, 
 	}
 }
 
-function addAnnotations(canvas, context, features_to_plot, features_JSON, centerX, centerY, radius, colors, origin, interval){
+function addAnnotations(canvas, context, features_to_plot, labels_to_plot, features_JSON, centerX, centerY, radius, colors, origin, interval, genome_length){
 	var array = JSON.parse(features_JSON);
 	var Features = {};
+	var Labels = {};
 	var linewidth = 10;
 	var i;
 	var rad;
 	for (i = 0; i < features_to_plot.length; i++) {
 		Features[features_to_plot[i]] = i;
+	}
+	for (i = 0; i < labels_to_plot.length; i++) {
+		Labels[labels_to_plot[i]] = i;
 	}
 	for (i = 0; i < array.length; i++) {
 		if (Features[array[i].type] !== undefined){
@@ -208,10 +212,30 @@ function addAnnotations(canvas, context, features_to_plot, features_JSON, center
 			var arcEnd = origin + (right * interval);
 			var arcRadius = rad + (linewidth / 2) + 1;
 			drawGlyphs(context, arcStart, arcEnd, colors[Features[array[i].type]], arcRadius, centerX, centerY, linewidth);
+			if (Labels[array[i].type] !== undefined) {
+				labelGlyphs(context, left, right, (rad+(1.5*linewidth)), origin, interval, array[i].ID, centerX, centerY, genome_length);
+			}
 		}
 	}
 }
 
+function labelGlyphs(context, start, end, radius, origin, interval, label, centerX, centerY, genome_length) {
+    context.save();
+    var mean = ((start/2) + (end/2));
+    var sx = origin + (mean * interval);
+    context.fillStyle = "black";
+    context.font = "4pt Helvetica";
+    var midpoint = genome_length / 2;
+    if (mean < midpoint) {
+	    context.textAlign = 'left';
+	}
+	else {
+		context.textAlign = 'right';
+	}
+    context.translate(((radius)* Math.cos(sx)) + centerX, (radius * Math.sin(sx)) + centerY);
+    context.fillText(label, 0, 0);
+    context.restore();
+}
 
 function drawGlyphs(context, start, end, color, radius, centerX, centerY, linewidth) {
         context.beginPath();

@@ -14,9 +14,10 @@
 			genome_name = "Carsonella ruddii ruddii PC";
 			genome_length = 5435369;
 			features_to_plot = ['tRNA', 'island'];
+			labels_to_plot = ['island'];
 			var obj = Please.make_color({colors_returned: features_to_plot.length, seed: 325});
 			options = {'canvas': my_canvas, 'colors': obj};
-			plotGenome(genome_name, genome_length, features_to_plot, features_JSON, options);
+			plotGenome(genome_name, genome_length, features_to_plot, features_JSON,labels_to_plot ,options);
 			</script>		
 		</canvas>
 	</div>
