@@ -10,11 +10,11 @@
 		<canvas id="my_canvas" width="600" height="600">
 			<script>
 			var features_JSON = {};
-			features_JSON = readGFF("NC_008512.gff");
+			features_JSON = readGFF("Klebs.gff");
 			genome_name = "Carsonella ruddii ruddii PC";
-			genome_length = 159662;
-			features_to_plot = ['tRNA', 'CDS', 'rRNA'];
-			var obj = Please.make_color({colors_returned: features_to_plot.length, seed: 425});
+			genome_length = 5435369;
+			features_to_plot = ['tRNA', 'island'];
+			var obj = Please.make_color({colors_returned: features_to_plot.length, seed: 325});
 			options = {'canvas': my_canvas, 'colors': obj};
 			plotGenome(genome_name, genome_length, features_to_plot, features_JSON, options);
 			</script>		
