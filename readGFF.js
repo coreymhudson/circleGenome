@@ -1,5 +1,6 @@
 function readGFF(filename) {
 	//This function reads gff files and exports json strings of annotation
+	//For a description of the file see http://spareinformatics.blogspot.com/2014/01/converting-gff-files-to-json-in.html
 	var pathOfFileToRead = filename;
 	function main(pathOfFileToRead)
 	//This function is not cross-platform, it works in Firefox and Safari, but not in Chrome
